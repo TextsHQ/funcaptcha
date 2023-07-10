@@ -12,8 +12,8 @@ const fun = require("funcaptcha")
 You must first fetch a token using getToken
 ```js
 const token = await fun.getToken({
-    pkey: "476068BF-9607-4799-B53D-966BE98E2B81", // The public key
-    surl: "https://roblox-api.arkoselabs.com", // OPTIONAL: Some websites can have a custom service URL
+    pkey: "35536E1E-65B4-4D96-9D97-6ADB7EFF8147", // The public key
+    surl: "https://tcr9i.chat.openai.com", // OPTIONAL: Some websites can have a custom service URL
     data: { // OPTIONAL
         blob: "blob" // Some websites can have custom data passed: here it is data[blob]
     },
@@ -22,7 +22,7 @@ const token = await fun.getToken({
         // in mind to pass a user agent when doing that
         "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'
     },
-    site: "https://www.roblox.com", // OPTIONAL: The site parameter, usually not required
+    site: "https://chat.openai.com", // OPTIONAL: The site parameter, usually not required
     proxy: "http://127.0.0.1:8888" // OPTIONAL: A proxy to fetch the token, usually not required
     // NOTE: The proxy will only be used for fetching the token, and not future requests such as getting images and answering captchas
 })

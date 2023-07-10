@@ -1,7 +1,6 @@
 import fingerprint from "./fingerprint";
 import murmur from "./murmur";
 import crypt from "./crypt";
-import { TokenInfo } from "./session"
 
 interface TimestampData {
     cookie: string;
@@ -383,11 +382,6 @@ function getTimestamp(): TimestampData {
     return { cookie: `timestamp=${value};path=/;secure;samesite=none`, value }
 }
 
-function getEmbedUrl(tokenData: TokenInfo): string {
-    const version = tokenData?.challenge_url_cdn?.match(/bootstrap\/(.+)\/standard/)?.[1] || "1.12.0"
-    return `${tokenData.surl}/fc/assets/ec-game-core/game-core/${version}/standard/index.html?session=${tokenData.token}&r=${tokenData.r}&meta=${tokenData.meta}&metabgclr=${tokenData.metabgclr}&metaiconclr=${encodeURIComponent(tokenData.metaiconclr)}&maintxtclr=${encodeURIComponent(tokenData.maintxtclr)}&guitextcolor=${encodeURIComponent(tokenData.guitextcolor)}&pk=${tokenData.pk}&at=${tokenData.at}${tokenData.rid ? '&rid=' + tokenData.rid : ''}&ag=${tokenData.ag}&cdn_url=${encodeURIComponent(tokenData.cdn_url)}&lurl=${encodeURIComponent(tokenData.lurl)}&surl=${encodeURIComponent(tokenData.surl)}&smurl=${encodeURIComponent(tokenData.smurl)}&theme=default`
-}
-
 function getBda(userAgent: string, pkey: string, surl: string, referer?: string, location?: string, canvasFp?: string): string {
     let fp = fingerprint.getFingerprint(canvasFp);
     let fe = fingerprint.prepareFe(fp);
@@ -574,8 +568,8 @@ function getBda(userAgent: string, pkey: string, surl: string, referer?: string,
                 {
                     "key": "window__ancestor_origins",
                     "value": [
-                        "https://www.roblox.com",
-                        "https://www.roblox.com"
+                        "https://chat.openai.com",
+                        "https://chat.openai.com"
                     ]
                 },
                 {
@@ -667,5 +661,4 @@ export default {
     breakerValue,
     getTimestamp,
     random,
-    getEmbedUrl,
 };

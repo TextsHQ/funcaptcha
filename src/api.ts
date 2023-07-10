@@ -1,4 +1,3 @@
-import request from "./http";
 import util from "./util";
 
 export interface GetTokenOptions {
@@ -34,7 +33,7 @@ export interface GetTokenResult {
 
 export async function getToken(
     options: GetTokenOptions
-): Promise<GetTokenResult> {
+): Promise<any> {
     options = {
         surl: "https://client-api.arkoselabs.com",
         data: {},
@@ -56,29 +55,23 @@ export async function getToken(
         options.headers["Origin"] = options.surl
         options.headers["Referer"] = `${options.surl}/v2/${options.pkey}/1.4.3/enforcement.${util.random()}.html`
     }
-    
+
     let ua = options.headers[Object.keys(options.headers).find(v => v.toLowerCase() == "user-agent")]
 
-    let res = await request(
-        options.surl,
-        {
-            method: "POST",
-            path: "/fc/gt2/public_key/" + options.pkey,
-            body: util.constructFormData({
-                bda: util.getBda(ua, options.pkey, options.surl, options.headers["Referer"], options.location, options.canvasFp),
-                public_key: options.pkey,
-                site: options.site,
-                userbrowser: ua,
-                capi_version: "1.4.3",
-                capi_mode: "inline",
-                style_theme: "default",
-                rnd: Math.random().toString(),
-                ...Object.fromEntries(Object.keys(options.data).map(v => ["data[" + v + "]", options.data[v]]))
-            }),
-            headers: options.headers,
-        },
-        options.proxy
-    );
+    return {
+        url: options.surl + '/fc/gt2/public_key' + options.pkey,
+        body: util.constructFormData({
+            bda: util.getBda(ua, options.pkey, options.surl, options.headers["Referer"], options.location, options.canvasFp),
+            public_key: options.pkey,
+            site: options.site,
+            userbrowser: ua,
+            capi_version: "1.4.3",
+            capi_mode: "inline",
+            style_theme: "default",
+            rnd: Math.random().toString(),
+            ...Object.fromEntries(Object.keys(options.data).map(v => ["data[" + v + "]", options.data[v]]))
+        }),
+        headers: options.headers,
 
-    return JSON.parse(res.body.toString());
+    }
 }
