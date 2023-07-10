@@ -82,7 +82,12 @@ function decrypt(rawData: string, key: string): string {
     return aes.update(data.ct, "base64", "utf8") + aes.final("utf8");
 }
 
-export default {
+function md5Hash(data: string): string {
+    return createHash("md5").update(data).digest("hex");
+}
+
+export {
     encrypt,
     decrypt,
+    md5Hash
 };

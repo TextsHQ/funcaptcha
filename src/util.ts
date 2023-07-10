@@ -1,6 +1,6 @@
 import fingerprint from "./fingerprint";
 import murmur from "./murmur";
-import crypt from "./crypt";
+import * as crypt from "./crypt";
 
 interface TimestampData {
     cookie: string;

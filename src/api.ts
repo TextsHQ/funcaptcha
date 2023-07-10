@@ -1,6 +1,7 @@
 import util from "./util";
+import { md5Hash } from './crypt'
 
-export interface GetTokenOptions {
+export interface GenerateRequestOptions {
     pkey: string;
     // Service URL
     surl?: string;
@@ -9,31 +10,16 @@ export interface GetTokenOptions {
     site?: string;
     // Page URL
     location?: string;
-    proxy?: string;
     canvasFp?: string;
 }
 
-export interface GetTokenResult {
-    challenge_url: string;
-    challenge_url_cdn: string;
-    challenge_url_cdn_sri: string;
-    disable_default_styling: boolean | null;
-    iframe_height: number | null;
-    iframe_width: number | null;
-    // Enable keyboard biometrics
-    kbio: boolean;
-    // Enable mouse biometrics
-    mbio: boolean;
-    noscript: string;
-    // Enable touch biometrics
-    tbio: boolean;
-    // The token for the funcaptcha. Can be used 10 times before having to get a new token.
-    token: string;
+export interface GeneratedRequest {
+    url: string;
+    body: string;
+    headers: Record<string, string>;
 }
 
-export async function getToken(
-    options: GetTokenOptions
-): Promise<any> {
+export function generateRequest(options: GenerateRequestOptions): GeneratedRequest {
     options = {
         surl: "https://client-api.arkoselabs.com",
         data: {},
@@ -53,25 +39,24 @@ export async function getToken(
 
     if (options.site) {
         options.headers["Origin"] = options.surl
-        options.headers["Referer"] = `${options.surl}/v2/${options.pkey}/1.4.3/enforcement.${util.random()}.html`
+        options.headers["Referer"] = `${options.surl}/v2/${options.pkey}/1.5.2/enforcement.${md5Hash(util.random().toString())}.html`
     }
 
     let ua = options.headers[Object.keys(options.headers).find(v => v.toLowerCase() == "user-agent")]
 
     return {
-        url: options.surl + '/fc/gt2/public_key' + options.pkey,
+        url: options.surl + '/fc/gt2/public_key/' + options.pkey,
         body: util.constructFormData({
             bda: util.getBda(ua, options.pkey, options.surl, options.headers["Referer"], options.location, options.canvasFp),
             public_key: options.pkey,
             site: options.site,
             userbrowser: ua,
-            capi_version: "1.4.3",
-            capi_mode: "inline",
+            capi_version: "1.5.2",
+            capi_mode: "lightbox",
             style_theme: "default",
             rnd: Math.random().toString(),
             ...Object.fromEntries(Object.keys(options.data).map(v => ["data[" + v + "]", options.data[v]]))
         }),
         headers: options.headers,
-
     }
 }
