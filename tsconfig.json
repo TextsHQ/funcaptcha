@@ -1,9 +1,9 @@
 {
-    "compilerOptions": {
-      "target": "es6",
-      "module": "commonjs",
-      "declaration": true,
-      "outDir": "./lib"
-    },
-    "include": ["src"],
+  "extends": "@textshq/platform-sdk/tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "strict": false,
+  },
+  "include": ["src"]
 }

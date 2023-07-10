@@ -10,13 +10,14 @@
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "scripts": {
-        "postinstall": "tsc",
+        "prepare": "tsc",
         "build": "tsc",
         "test": "node test/test.js",
         "benchmark": "node test/benchmark.js"
     },
     "repository": "github:noahcoolboy/funcaptcha",
     "dependencies": {
+        "@textshq/platform-sdk": "https://github.com/TextsHQ/platform-sdk",
         "@types/node": "^18.16.19",
         "typescript": "^5.1.6"
     }
